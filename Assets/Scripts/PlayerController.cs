@@ -9,6 +9,8 @@ public class PlayerController : MonoBehaviour
 
     public CharacterController characterController;
 
+    public Animator animator;
+
     #region Movement 
     [Header("Movement Variables")]
     public float moveSpeed;
@@ -39,7 +41,10 @@ public class PlayerController : MonoBehaviour
     void UpdateMovement()
     {
         var movementInput = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical")).normalized;
-        characterController.Move(movementInput * moveSpeed * Time.deltaTime);
+        var moveDelta = movementInput * moveSpeed * Time.deltaTime;
+        characterController.Move(moveDelta);
+
+        animator.SetBool("walking", moveDelta.magnitude != 0);
     }
 
     void UpdateCamera() 
