@@ -2407,34 +2407,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1459470303}
   m_LocalEulerAnglesHint: {x: 0, y: -0.999, z: 0}
---- !u!1 &1626121240 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4749411390020505669, guid: 5c06b891a3f3e2846b12ccb4d2c84453,
-    type: 3}
-  m_PrefabInstance: {fileID: 4692415280138509855}
-  m_PrefabAsset: {fileID: 0}
---- !u!195 &1626121250
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1626121240}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.5000001
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 2
-  m_BaseOffset: 1
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
 --- !u!1001 &1781119980
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3333,11 +3305,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3428752623341774308, guid: 5c06b891a3f3e2846b12ccb4d2c84453,
-        type: 3}
-      propertyPath: _agent
-      value: 
-      objectReference: {fileID: 1626121250}
     - target: {fileID: 4749411390020505669, guid: 5c06b891a3f3e2846b12ccb4d2c84453,
         type: 3}
       propertyPath: m_Name
@@ -3396,11 +3363,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4749411390020505669, guid: 5c06b891a3f3e2846b12ccb4d2c84453,
-        type: 3}
-      insertIndex: 4
-      addedObject: {fileID: 1626121250}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5c06b891a3f3e2846b12ccb4d2c84453, type: 3}
 --- !u!1001 &7042826663797412041
 PrefabInstance:
@@ -3506,11 +3469,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 728000123768827629, guid: e08b9a73a01c46e40b06048d61014fc6,
-        type: 3}
-      propertyPath: m_Radius
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 4125596272215286652, guid: e08b9a73a01c46e40b06048d61014fc6,
         type: 3}
       propertyPath: playerCamera
