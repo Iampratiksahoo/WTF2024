@@ -1,15 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.TextCore.Text;
 
 public class PlayerController : MonoBehaviour
 {
     public Camera playerCamera;
 
-    public CharacterController characterController;
+    public NavMeshAgent _agent;
 
     public Animator animator;
+
+    public LayerMask _walkableLayer;
 
     #region Movement 
     [Header("Movement Variables")]
@@ -40,11 +43,12 @@ public class PlayerController : MonoBehaviour
 
     void UpdateMovement()
     {
-        var movementInput = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical")).normalized;
-        var moveDelta = movementInput * moveSpeed * Time.deltaTime;
-        characterController.Move(moveDelta);
-
-        animator.SetBool("walking", moveDelta.magnitude != 0);
+        if (Input.GetMouseButton(0)) {
+            if (Physics.Raycast(playerCamera.ScreenPointToRay(Input.mousePosition), out RaycastHit hitInfo, 100f, _walkableLayer)) {
+                _agent.destination = hitInfo.point;
+            }
+        }
+        animator.SetBool("walking", _agent.velocity.magnitude > 0.02f);
     }
 
     void UpdateCamera() 

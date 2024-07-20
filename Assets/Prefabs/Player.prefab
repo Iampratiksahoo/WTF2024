@@ -198,7 +198,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 1.5
+  m_Radius: 3
   m_Center: {x: 0, y: 1.69, z: 0}
 --- !u!114 &6476271096174031171
 MonoBehaviour:
@@ -221,8 +221,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8579349351844704907}
-  - component: {fileID: 4714968229590852493}
-  - component: {fileID: 24212531562300111}
+  - component: {fileID: 6073000264647238069}
   - component: {fileID: 4125596272215286652}
   m_Layer: 0
   m_Name: Player
@@ -249,55 +248,28 @@ Transform:
   - {fileID: 182341500858989660}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &4714968229590852493
-CapsuleCollider:
+--- !u!195 &6073000264647238069
+NavMeshAgent:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8021538413884212279}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  m_AgentTypeID: 0
   m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
   m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!143 &24212531562300111
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8021538413884212279}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Height: 2
-  m_Radius: 0.5
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!114 &4125596272215286652
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -311,11 +283,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCamera: {fileID: 0}
-  characterController: {fileID: 24212531562300111}
+  _agent: {fileID: 6073000264647238069}
   animator: {fileID: 6888227237487745863}
-  moveSpeed: 30
+  _walkableLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  moveSpeed: 15
   cameraOffset: {x: 0, y: 0, z: 0}
-  cameraFollowSpeed: 0.3
+  cameraFollowSpeed: 0.6
 --- !u!1001 &1080146499320424150
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Ped_Hostile
   m_EditorClassIdentifier: 
   mood: 1
-  walkSpeed: 10
-  runSpeed: 30
+  walkSpeed: 5
+  runSpeed: 15
   wanderTimer: 3
   acceptanceRadius: 100
