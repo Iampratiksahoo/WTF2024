@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class FlickeringLight : MonoBehaviour
 {
+    public float initDelay;
     public float flickerFreq; 
     private Light _light;
 
@@ -20,6 +21,7 @@ public class FlickeringLight : MonoBehaviour
 
     private IEnumerator Flicker()
     {
+        yield return new WaitForSeconds(initDelay);   
 coro:
         float elapsedTime = 0;  
         while(elapsedTime < flickerFreq) 
