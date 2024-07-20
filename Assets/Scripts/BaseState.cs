@@ -17,9 +17,9 @@ public abstract class BaseState<TOwnerCharacter> where TOwnerCharacter : IStateC
         _ctx = inCtx;
     }
 
-    public abstract void OnEnter();
+    public virtual void OnEnter() {}
 
-    public abstract void OnExit();
+    public virtual void OnExit() {}
 
-    public abstract void OnUpdate();
+    public virtual void OnUpdate() {}
 }

@@ -9,7 +9,6 @@ public class Timer
     public bool canTick;
 
     public Timer(float inDuration, Action inAfterCallback) {
-        Debug.LogWarning("Timer started");
         duration = inDuration;
         callback = inAfterCallback;
         tickTimer = 0f;
@@ -22,11 +21,15 @@ public class Timer
             return;
 
         if (tickTimer >= duration) {
-            Debug.LogWarning("Timer ended");
             TimerManager.Instance.UnRegisterTimer(this);
             canTick = false;
             callback?.Invoke();
         }
         tickTimer += Time.deltaTime;
+    }
+
+    public void Stop() {
+        TimerManager.Instance.UnRegisterTimer(this);
+        canTick = false;
     }
 }

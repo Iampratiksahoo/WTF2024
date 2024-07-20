@@ -3,6 +3,7 @@ using UnityEngine;
 public class PedestrianIdleState : BaseState<Pedestrian>
 {
     float _currentWanderTimer;
+    Timer _wanderSwitchTimer = null;
 
     public PedestrianIdleState(FSM<Pedestrian> inCtx) : base(inCtx)
     {
@@ -11,7 +12,7 @@ public class PedestrianIdleState : BaseState<Pedestrian>
     public override void OnEnter()
     {
         Debug.Log("Entering idle state");
-        new Timer(_ctx.GetFSMOwner()._pedestrianData.wanderTimer, () => {
+        _wanderSwitchTimer = new Timer(_ctx.GetFSMOwner()._pedestrianData.wanderTimer, () => {
             _ctx.SwitchState(_ctx.GetFSMOwner().WanderState);
         });
     }
@@ -19,6 +20,8 @@ public class PedestrianIdleState : BaseState<Pedestrian>
     public override void OnExit()
     {
         _currentWanderTimer = 0f;
+        _wanderSwitchTimer.Stop();
+        _wanderSwitchTimer = null;
         Debug.Log("Exiting idle state");
     }
 

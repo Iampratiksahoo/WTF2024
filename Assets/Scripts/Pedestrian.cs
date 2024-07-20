@@ -9,7 +9,7 @@ using UnityEngine.AI;
 public class Pedestrian : MonoBehaviour, IZombie, IStateCharacter
 {
     public MeshRenderer _renderer;
-    public bool _isTurned = false;
+    public bool _hasTurned = false;
     public bool _hasWayPoint = false;
     public PedestrianData _pedestrianData;
     public NavMeshAgent _agent;
@@ -19,6 +19,8 @@ public class Pedestrian : MonoBehaviour, IZombie, IStateCharacter
     public BaseState<Pedestrian> WanderState { get; private set; }
     public BaseState<Pedestrian> HideState { get; private set; }
     public BaseState<Pedestrian> ChaseState{ get; private set; }
+    public BaseState<Pedestrian> InfestingState{ get; private set; }
+    public bool IsTurned { get => _hasTurned; set => _hasTurned = value; }
 
     void Awake() {
         _renderer = GetComponent<MeshRenderer>();
@@ -31,6 +33,8 @@ public class Pedestrian : MonoBehaviour, IZombie, IStateCharacter
         WanderState = new PedestrianWanderState(ctx);
         HideState = new PedestrianHideState(ctx);
         ChaseState = new PedestrianChaseState(ctx);
+        InfestingState = new PedestrianInfestingState(ctx);
+
         ctx.SwitchState(IdleState);
     }
 
@@ -39,10 +43,27 @@ public class Pedestrian : MonoBehaviour, IZombie, IStateCharacter
         ctx.Tick();
     }
 
-    public void Turn()
-    {
-        _isTurned = true;
+    public void StopMoving() {
+        print("Zombifying: " + this.name);
+        _agent.isStopped = true;
+        ctx.SwitchState(InfestingState);
+    }
+
+    public void Turn() {
+        // TODO (satweek): Change animator layer here
+        print("Turned: " + this.name);
+        _hasTurned = true;
         _renderer.material.color = Color.red;
+        ctx.SwitchState(IdleState);
+        _agent.isStopped = false;
+    }
+
+    public Vector3 GetPosition() {
+        return transform.position;
+    }
+
+    public Quaternion GetRotation() {
+        return transform.rotation;
     }
 }
 
