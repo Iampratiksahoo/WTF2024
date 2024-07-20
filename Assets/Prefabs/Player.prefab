@@ -223,6 +223,7 @@ GameObject:
   - component: {fileID: 8579349351844704907}
   - component: {fileID: 6073000264647238069}
   - component: {fileID: 4125596272215286652}
+  - component: {fileID: 3933075958853587726}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -291,6 +292,14 @@ MonoBehaviour:
   moveSpeed: 15
   cameraOffset: {x: 0, y: 0, z: 0}
   cameraFollowSpeed: 0.6
+--- !u!81 &3933075958853587726
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8021538413884212279}
+  m_Enabled: 1
 --- !u!1001 &1080146499320424150
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -322,7 +331,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: bf940b30fafb16743a7dd4c6d9204d20,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1
+      value: -0.1384972
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: bf940b30fafb16743a7dd4c6d9204d20,
         type: 3}
