@@ -1,22 +1,24 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.TextCore.Text;
 
-public class PlayerController : MonoBehaviour
-{
-    public Camera playerCamera;
+public class PlayerController : MonoBehaviour {
+    public Camera _playerCamera;
 
     public NavMeshAgent _agent;
 
-    public Animator animator;
+    public Animator _animator;
 
     public LayerMask _walkableLayer;
 
+    public ZombieCreator _zombieCreator;
+
     #region Movement 
     [Header("Movement Variables")]
-    public float moveSpeed;
+    public float _moveSpeed;
     #endregion
 
     #region Camera
@@ -29,35 +31,53 @@ public class PlayerController : MonoBehaviour
     Vector3 cameraFollowVelocity;
     #endregion
 
-    void Start() 
-    {
+    void Start() {
         playerPosLastFrame = transform.position;
         playerPosCurrentFrame = transform.position;
+        _zombieCreator.OnZombifyBegin += OnZombifyBegin;
+        _zombieCreator.OnZombifyEnd += OnZombifyEnd;
     }
 
-    void Update()
-    {
+    private void OnZombifyBegin() {
+        _agent.isStopped = true;
+        _agent.ResetPath();
+        transform.rotation = Quaternion.LookRotation((_zombieCreator._currentVictim.GetPosition() - transform.position).normalized, transform.up);
+        _animator.SetBool("Attacking", true);
+    }
+
+    private void OnZombifyEnd() {
+        _agent.isStopped = false;
+        _animator.SetBool("Attacking", false);
+    }
+
+    void Update() {
         UpdateMovement();
         UpdateCamera();
+        UpdateZombieCreatorLogic();
     }
 
-    void UpdateMovement()
-    {
+    private void UpdateZombieCreatorLogic() {
+        // TODO (Satweek): Bug here, player can press E multiple times here.
+        if (Input.GetKeyDown(KeyCode.E)) {
+            _zombieCreator.TryZombifyVictimInRange();
+        }
+    }
+
+    void UpdateMovement() {
         if (Input.GetMouseButton(0)) {
-            if (Physics.Raycast(playerCamera.ScreenPointToRay(Input.mousePosition), out RaycastHit hitInfo, 100f, _walkableLayer)) {
+            if (Physics.Raycast(_playerCamera.ScreenPointToRay(Input.mousePosition), out RaycastHit hitInfo, 100f, _walkableLayer)) {
                 _agent.destination = hitInfo.point;
             }
         }
-        animator.SetBool("walking", _agent.velocity.magnitude > 0.02f);
+        _animator.SetBool("Running", _agent.velocity.magnitude > 0.02f);
     }
 
-    void UpdateCamera() 
-    {
+    void UpdateCamera() {
        playerPosLastFrame = playerPosCurrentFrame;
         var playerDeltaPos = transform.position - playerPosLastFrame;
-        playerCamera.transform.position = Vector3.SmoothDamp(
-            playerCamera.transform.position,
-            playerCamera.transform.position + playerDeltaPos,
+        _playerCamera.transform.position = Vector3.SmoothDamp(
+            _playerCamera.transform.position,
+            _playerCamera.transform.position + playerDeltaPos,
             ref cameraFollowVelocity,
             cameraFollowSpeed * Time.deltaTime
         );

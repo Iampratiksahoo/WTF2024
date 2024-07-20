@@ -7,15 +7,10 @@ using UnityEngine.AI;
 public class PedestrianWanderState : BaseState<Pedestrian> 
 {
     WayPoint _randomPatrolPoint = null;
-    float _wanderRadius;
-    float _speed;
     Dictionary<Func<bool>, BaseState<Pedestrian>> _transitioningFunctions;
 
     public PedestrianWanderState(FSM<Pedestrian> inCtx) : base(inCtx)
     {
-        // Set the movement speed
-        _wanderRadius = _ctx.GetFSMOwner()._pedestrianData.acceptanceRadius;
-        _speed = _ctx.GetFSMOwner()._pedestrianData.walkSpeed;
         _transitioningFunctions = new() {
             { HasReachedRandomPoint, _ctx.GetFSMOwner().IdleState }
         };
@@ -30,14 +25,16 @@ public class PedestrianWanderState : BaseState<Pedestrian>
             900f, 
             NavMesh.AllAreas
         );                                                                                                                  // Sample position to navmesh
-        _ctx.GetFSMOwner()._agent.speed = _speed;                                                                           // Set the agent speed
-        _ctx.GetFSMOwner()._agent.stoppingDistance = _wanderRadius;                                                         // Set the acceptance radius to stop the agent at a radius away from the point
+        _ctx.GetFSMOwner()._animator.SetBool("Walking", true);                                                              // Start the walking animation
+        _ctx.GetFSMOwner()._agent.speed = _ctx.GetFSMOwner()._pedestrianData.walkSpeed;                                     // Set the agent speed
+        _ctx.GetFSMOwner()._agent.stoppingDistance = _ctx.GetFSMOwner()._pedestrianData.acceptanceRadius;                   // Set the acceptance radius to stop the agent at a radius away from the point
         _ctx.GetFSMOwner()._agent.destination = hitInfo.position;                                                           // Move to that projected position
     }
 
     public override void OnExit()
     {
         Debug.Log("Exiting wander state");
+        _ctx.GetFSMOwner()._animator.SetBool("Walking", false);
         _randomPatrolPoint = null;
     }
 
@@ -52,6 +49,7 @@ public class PedestrianWanderState : BaseState<Pedestrian>
 
     bool HasReachedRandomPoint() {
         return _randomPatrolPoint != null &&
-        Vector3.Distance(_randomPatrolPoint.transform.position, _ctx.GetFSMOwner().transform.position) < _wanderRadius;
+        _ctx.GetFSMOwner()._agent.stoppingDistance <= _ctx.GetFSMOwner()._pedestrianData.acceptanceRadius;
+        // Vector3.Distance(_randomPatrolPoint.transform.position, _ctx.GetFSMOwner().transform.position) < _ctx.GetFSMOwner()._pedestrianData.acceptanceRadius;
     }
 }

@@ -27,11 +27,5 @@ public class PedestrianIdleState : BaseState<Pedestrian>
 
     public override void OnUpdate()
     {
-        /** 
-        if (_currentWanderTimer >= _ctx.GetFSMOwner()._pedestrianData.wanderTimer) {
-            _ctx.SwitchState(_ctx.GetFSMOwner().WanderState);
-        }
-        _currentWanderTimer += Time.deltaTime;
-        */
     }
 }
