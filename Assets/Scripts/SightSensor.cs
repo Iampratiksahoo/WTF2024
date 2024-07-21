@@ -46,7 +46,6 @@ public class SightSensor : MonoBehaviour
     public void Sense() {
         var affectedZombies = ZombieManager.Instance._affectedZombies;
         if (affectedZombies.Count <= 0) return;
-
         foreach (var t in affectedZombies) {
             
             // If self
@@ -63,6 +62,10 @@ public class SightSensor : MonoBehaviour
             var angle = Vector3.Angle(transform.forward, dirToTarget);
             Debug.LogWarning("Sensed Angle: " +  angle);
             if (angle > _detectionAngle) {
+                continue;
+            }
+
+            if (Physics.Linecast(transform.position, t.GetPosition(), out RaycastHit hitInfo, LayerMask.NameToLayer("Detectable"))) {
                 continue;
             }
 

@@ -14,9 +14,10 @@ public enum PoliceState {
 public struct PoliceData {
     public float walkSpeed;
     public float runSpeed;
-    public float attackRadius;
-    public float wanderRadius;
+    public float acceptanceAttackRadius;
+    public float acceptanceRadius;
     public float patrolInterval;
+    public float shootingInterval;
 }
 
 public class Police : MonoBehaviour {
@@ -29,6 +30,8 @@ public class Police : MonoBehaviour {
     public NavMeshAgent agent;
     public Animator animator;
     float currentPatrolTickTimer;
+    float currentShootingTickTimer;
+    public ParticleSystem shootingParticle;
 
     public PoliceState State { 
         get => policeState;
@@ -36,16 +39,15 @@ public class Police : MonoBehaviour {
             policeState = value;
             if (policeState == PoliceState.Idle || policeState == PoliceState.Patrol) {
                 agent.speed = data.walkSpeed;
-                agent.stoppingDistance = data.wanderRadius;
             } else {
                 agent.speed = data.runSpeed;
-                agent.stoppingDistance = data.attackRadius;
             }
         }
     }
 
     void Start() {
         State = PoliceState.Idle;
+        sightSensor.StartSense();
     }
 
     void Update() {
@@ -65,11 +67,14 @@ public class Police : MonoBehaviour {
             }
             case PoliceState.Patrol: {
                 if (currentWayPoint != null) {
-                    NavMesh.SamplePosition(currentWayPoint.transform.position, out NavMeshHit hit, 1000f, NavMesh.AllAreas);
                     animator.SetBool("Walking", true);
+                    NavMesh.SamplePosition(currentWayPoint.transform.position, out NavMeshHit hit, 1000f, NavMesh.AllAreas);
                     agent.destination = hit.position;
-                    if (agent.remainingDistance <= data.wanderRadius) {
+                    var dist = Vector3.Distance(transform.position, currentWayPoint.transform.position);
+                    Debug.Log("Distance to end patrol: " + dist);
+                    if (dist <= data.acceptanceRadius) {
                         currentWayPoint = null;
+                        agent.ResetPath();
                         animator.SetBool("Walking", false);
                         State = PoliceState.Idle;
                     }
@@ -77,10 +82,30 @@ public class Police : MonoBehaviour {
                 break;
             }
             case PoliceState.Chase: {
-                animator.SetBool("Walking", false); // set walking to false
-                animator.SetBool("Running", agent.velocity.magnitude >= 0.02f);  // and running to true
-                agent.destination = currentSensedThreat.GetPosition();
-                TryShooting();
+                agent.ResetPath();
+                if (currentSensedThreat == null) {
+                    // Lost sight ? 
+                    currentShootingTickTimer = 0f;
+                    State = PoliceState.Idle;
+                }
+
+                // Look towards the target
+                transform.rotation = Quaternion.LookRotation((currentSensedThreat.GetPosition() - transform.position).normalized);
+
+                // set walking to false
+                animator.SetBool("Walking", agent.velocity.magnitude >= 0.02f); 
+
+                // Move agent towards the threat until it reaches the attack radius
+                if (Vector3.SqrMagnitude(transform.position - currentSensedThreat.GetPosition()) >= data.acceptanceAttackRadius * data.acceptanceAttackRadius) {
+                    agent.destination = currentSensedThreat.GetPosition();
+                }
+
+                // Start the shooting timer
+                if (currentShootingTickTimer >= data.shootingInterval) {
+                    TryShooting();
+                    currentShootingTickTimer = 0f;
+                }
+                currentShootingTickTimer += Time.deltaTime;
                 break;
             }
         }
@@ -92,24 +117,22 @@ public class Police : MonoBehaviour {
         Debug.DrawLine(start, end, Color.magenta);
         if (Physics.Linecast(start, end, out RaycastHit hitInfo)) {
             var threat = hitInfo.collider.GetComponentInParent<IThreat>();
-            threat?.Damage(100f);
-        }
-    }
-
-    private void OnKilled() {
-        if (currentSensedThreat != null) {
-            currentSensedThreat.OnKilled -= OnKilled;
-            // Then remove from the pedestrian manager
-            PedestrianManager.Instance.DestoryPedestrian(currentSensedThreat.GetTransform().GetComponentInParent<Pedestrian>(), true);
-            currentSensedThreat = null;
-            State = PoliceState.Idle;
+            shootingParticle.Play();
+            threat?.Damage(35f);
         }
     }
 
     private void OnSensedThreat(IThreat threat) {
         currentSensedThreat = threat;
-        currentSensedThreat.OnKilled += OnKilled;
+        currentSensedThreat.OnDead += OnDead;
         State = PoliceState.Chase;
+    }
+
+    private void OnDead() {
+        if (currentSensedThreat != null) {
+            currentSensedThreat.OnDead -= OnDead;
+            currentSensedThreat = null;
+        }
     }
 
     void OnEnable() {

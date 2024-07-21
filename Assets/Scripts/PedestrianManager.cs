@@ -8,6 +8,7 @@ public class PedestrianManager : MonoBehaviour
 {
     public static PedestrianManager Instance;
     public List<Pedestrian> _pedestrians = new List<Pedestrian>();
+    public List<Pedestrian> deads = new();
 
     void Awake() {
         if (Instance == null) {
@@ -33,14 +34,22 @@ public class PedestrianManager : MonoBehaviour
         }
     }
 
-    public void DestoryPedestrian(Pedestrian other, bool isZombie = false) {
+    public void Register(Pedestrian other) {
+        if (!_pedestrians.Contains(other)) {
+            _pedestrians.Add(other);
+        }
+    }
+
+    public void UnRegister(Pedestrian other, bool isZombie = false) {
         if (isZombie) {
             ZombieManager.Instance.RemoveZombie(other);
         }
 
         if (_pedestrians.Contains(other)) {
             _pedestrians.Remove(other);
-            Destroy(other.gameObject);
+            deads.Add(other);
+            // Destroy(other.gameObject);
+            other.gameObject.SetActive(false);
         }
     }
 }

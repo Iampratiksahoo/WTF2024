@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.TextCore.Text;
 
-public class PlayerController : MonoBehaviour {
+public class PlayerController : MonoBehaviour, IThreat {
     public Camera _playerCamera;
 
     public NavMeshAgent _agent;
@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviour {
     public Animator _animator;
 
     public LayerMask _walkableLayer;
+
+    public float health = 100f;
 
     public ZombieCreator _zombieCreator;
 
@@ -32,11 +34,16 @@ public class PlayerController : MonoBehaviour {
     #endregion
 
     public ParticleSystem clickEffect;
+
+    public bool IsThreat { get; set; } = true;
+    public Action OnDead { get; set; }
+
     void Start() {
         playerPosLastFrame = transform.position;
         playerPosCurrentFrame = transform.position;
         _zombieCreator.OnZombifyBegin += OnZombifyBegin;
         _zombieCreator.OnZombifyEnd += OnZombifyEnd;
+        ZombieManager.Instance._affectedZombies.Add(this);
     }
 
     private void OnZombifyBegin() {
@@ -91,5 +98,24 @@ public class PlayerController : MonoBehaviour {
             cameraFollowSpeed * Time.deltaTime
         );
         playerPosCurrentFrame = transform.position;
+    }
+
+    public Vector3 GetPosition() {
+        return transform.position;
+    }
+
+    public Transform GetTransform() {
+        return transform;
+    }
+
+    public void Damage(float amount) {
+        Debug.LogError("Police shootin at us");
+        health -= amount;
+
+        if (health <= 0) {
+            Debug.Log("Dead");
+            OnDead?.Invoke();
+            gameObject.SetActive(false);
+        }
     }
 }

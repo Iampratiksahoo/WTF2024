@@ -28,7 +28,6 @@ public class PedestrianWanderState : BaseState<Pedestrian>
         );
         _ctx.GetFSMOwner()._animator.SetBool("Walking", true);
         _ctx.GetFSMOwner()._agent.speed = _ctx.GetFSMOwner()._pedestrianData.walkSpeed;
-        _ctx.GetFSMOwner()._agent.stoppingDistance = _ctx.GetFSMOwner()._pedestrianData.acceptanceRadius;
         _ctx.GetFSMOwner()._agent.destination = hitInfo.position;
     }
 

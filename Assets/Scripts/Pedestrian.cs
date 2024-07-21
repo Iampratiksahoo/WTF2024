@@ -27,7 +27,9 @@ public class Pedestrian : MonoBehaviour, IZombie, IThreat, IStateCharacter
     public BaseState<Pedestrian> InfestingState{ get; private set; }
     public bool IsTurned { get => _isTurned; set => _isTurned = value; }
     public bool IsThreat { get => IsTurned; set => IsTurned = value; }
-    public Action OnKilled { get; set; }
+    public Action OnDead { get; set; }
+
+    public float Health = 100f;
 
     void Awake() {
     }
@@ -112,8 +114,12 @@ public class Pedestrian : MonoBehaviour, IZombie, IThreat, IStateCharacter
     public void Damage(float amount){
         // Play kill animation
         // Play particle FX
-        Debug.LogError("Killed: " + name);
-        OnKilled?.Invoke();
+        Health -= amount;
+        if (Health <= 0) {
+            Debug.LogError("Killed: " + name);
+            OnDead?.Invoke();
+            PedestrianManager.Instance.UnRegister(this, true);
+        }
         _sightSensor.StopSense();
     }
 
