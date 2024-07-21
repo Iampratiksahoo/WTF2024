@@ -15,7 +15,5 @@ public struct PedestrianData
 
     public void TurnZombieData() {
         walkSpeed = 1.2f;
-        runSpeed = 0;
-        acceptanceRadius /= 2;
     }
 }

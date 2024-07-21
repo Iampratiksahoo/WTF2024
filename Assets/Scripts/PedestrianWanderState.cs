@@ -35,6 +35,7 @@ public class PedestrianWanderState : BaseState<Pedestrian>
     {
         Debug.Log("Exiting wander state");
         _ctx.GetFSMOwner()._animator.SetBool("Walking", false);
+        _ctx.GetFSMOwner()._agent.ResetPath();
         _randomPatrolPoint = null;
     }
 
@@ -49,7 +50,6 @@ public class PedestrianWanderState : BaseState<Pedestrian>
 
     bool HasReachedRandomPoint() {
         return _randomPatrolPoint != null &&
-        _ctx.GetFSMOwner()._agent.stoppingDistance <= _ctx.GetFSMOwner()._pedestrianData.acceptanceRadius;
-        // Vector3.Distance(_randomPatrolPoint.transform.position, _ctx.GetFSMOwner().transform.position) < _ctx.GetFSMOwner()._pedestrianData.acceptanceRadius;
+        Vector3.Distance(_randomPatrolPoint.transform.position, _ctx.GetFSMOwner().transform.position) < _ctx.GetFSMOwner()._pedestrianData.acceptanceRadius;
     }
 }

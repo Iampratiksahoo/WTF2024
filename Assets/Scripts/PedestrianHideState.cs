@@ -16,15 +16,19 @@ public class PedestrianHideState : BaseState<Pedestrian>
             out NavMeshHit hitInfo, 
             900f, 
             NavMesh.AllAreas
-        );                                                                                                                  // Sample position to navmesh
-        _ctx.GetFSMOwner()._animator.SetBool("Running", true);                                                              // Start the running animation
-        _ctx.GetFSMOwner()._agent.speed = _ctx.GetFSMOwner()._pedestrianData.runSpeed;                                      // Set the agent speed
-        _ctx.GetFSMOwner()._agent.stoppingDistance = _ctx.GetFSMOwner()._pedestrianData.acceptanceRadius;                   // Set the acceptance radius to stop the agent at a radius away from the point
-        _ctx.GetFSMOwner()._agent.destination = hitInfo.position;                                                           // Move to that projected position
+        );                                               
+        _ctx.GetFSMOwner()._animator.SetBool("Walking", false);        
+        _ctx.GetFSMOwner()._animator.SetBool("Running", true);
+        _ctx.GetFSMOwner()._agent.speed = _ctx.GetFSMOwner()._pedestrianData.runSpeed;
+        _ctx.GetFSMOwner()._agent.stoppingDistance = 0;
+        _ctx.GetFSMOwner()._agent.destination = hitInfo.position;
     }
 
     public override void OnExit()
     {
+        _ctx.GetFSMOwner()._animator.SetBool("Running", false);
+        _ctx.GetFSMOwner()._agent.stoppingDistance = _ctx.GetFSMOwner()._pedestrianData.acceptanceRadius;
+        _ctx.GetFSMOwner()._agent.ResetPath();
     }
 
     public override void OnUpdate()
