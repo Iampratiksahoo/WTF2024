@@ -9,8 +9,6 @@ public class TimerManager : MonoBehaviour {
         if (Instance == null) {
             Instance = this;
         }
-
-        DontDestroyOnLoad(this);
     }
 
     void Update() {

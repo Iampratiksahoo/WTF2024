@@ -18,6 +18,8 @@ public class PlayerController : MonoBehaviour, IThreat {
 
     public ZombieCreator _zombieCreator;
 
+    public GameObject chosenQuad;
+
     #region Movement 
     [Header("Movement Variables")]
     public float _moveSpeed;
@@ -31,6 +33,7 @@ public class PlayerController : MonoBehaviour, IThreat {
     Vector3 currentCameraLocation = Vector3.zero;
     public float cameraFollowSpeed;
     Vector3 cameraFollowVelocity;
+    public bool controlCamera = true;
     #endregion
 
     public ParticleSystem clickEffect;
@@ -60,8 +63,20 @@ public class PlayerController : MonoBehaviour, IThreat {
 
     void Update() {
         UpdateMovement();
-        UpdateCamera();
+        if(controlCamera) UpdateCamera();
         UpdateZombieCreatorLogic();
+        UpdateChosenQuadLocation();
+    }
+
+    private void UpdateChosenQuadLocation()
+    {
+        chosenQuad.SetActive(_zombieCreator._currentVictim != null);
+        if(_zombieCreator._currentVictim != null)
+        {
+            var pos = _zombieCreator._currentVictim.GetPosition();
+            pos.y = 0.1f;
+            chosenQuad.transform.position = pos;
+        }
     }
 
     private void UpdateZombieCreatorLogic() {
@@ -115,6 +130,7 @@ public class PlayerController : MonoBehaviour, IThreat {
         if (health <= 0) {
             Debug.Log("Dead");
             OnDead?.Invoke();
+            GameManager.Instance.Lost();
             GetComponent<Death>().Die();
         }
     }

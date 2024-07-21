@@ -14,7 +14,6 @@ public class PedestrianManager : MonoBehaviour
         if (Instance == null) {
             Instance = this;
         }
-        DontDestroyOnLoad(this);
     }
 
     void Start() 
