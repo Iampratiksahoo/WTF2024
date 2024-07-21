@@ -9,6 +9,7 @@ public class PedestrianManager : MonoBehaviour
     public static PedestrianManager Instance;
     public List<Pedestrian> _pedestrians = new List<Pedestrian>();
     public List<Pedestrian> deads = new();
+    public GameProgressBar gameProgress;
 
     void Awake() {
         if (Instance == null) {
@@ -32,6 +33,8 @@ public class PedestrianManager : MonoBehaviour
         {
             _pedestrians[i].MyTick();
         }
+
+        gameProgress.SetProgress(deads.Count, _pedestrians.Count + deads.Count);
     }
 
     public void Register(Pedestrian other) {
