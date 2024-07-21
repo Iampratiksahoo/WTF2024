@@ -5,12 +5,6 @@ using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public interface IThreat {
-    Vector3 GetPosition();
-    Transform GetTransform();
-    bool IsThreat { get; set; }
-}
-
 public enum SenseUpdateType {
     Add,
     Remove
@@ -23,7 +17,7 @@ public class SightSensor : MonoBehaviour
     public float _senseInterval;
     public float _currentSenseTimer;
     public Action<IThreat> OnSensedThreat;
-    bool _canSense = false;
+    public bool _canSense = false;
     Vector3 castPos;
 
     public void Update() {
@@ -35,19 +29,6 @@ public class SightSensor : MonoBehaviour
         }
         _currentSenseTimer += Time.deltaTime;
     }
-
-    // public void Sense() {
-    //     bool hit = Physics.SphereCast(transform.position, 4f, transform.forward, out RaycastHit hitInfo, _detectionDistance);
-    //     castPos = transform.position + transform.forward * _detectionDistance;
-    //     if (hit) {
-    //         var threat = hitInfo.collider.GetComponent<IThreat>();
-    //         if (threat != null) {
-    //             if (threat.IsThreat) {
-    //                 OnSensedThreat?.Invoke(threat);
-    //             }
-    //         }
-    //     }
-    // }
 
     public void StartSense() {
         _canSense = true;

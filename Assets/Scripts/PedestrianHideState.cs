@@ -16,7 +16,7 @@ public class PedestrianHideState : BaseState<Pedestrian>
             out NavMeshHit hitInfo, 
             900f, 
             NavMesh.AllAreas
-        );                                               
+        );
         _ctx.GetFSMOwner()._animator.SetBool("Walking", false);        
         _ctx.GetFSMOwner()._animator.SetBool("Running", true);
         _ctx.GetFSMOwner()._agent.speed = _ctx.GetFSMOwner()._pedestrianData.runSpeed;

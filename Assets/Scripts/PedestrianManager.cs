@@ -6,12 +6,23 @@ using UnityEngine;
 
 public class PedestrianManager : MonoBehaviour
 {
+    public static PedestrianManager Instance;
     public List<Pedestrian> _pedestrians = new List<Pedestrian>();
+
+    void Awake() {
+        if (Instance == null) {
+            Instance = this;
+        }
+        DontDestroyOnLoad(this);
+    }
 
     void Start() 
     {
         var objects = FindObjectsByType(typeof(Pedestrian), FindObjectsSortMode.None);
-        objects.ToList().ForEach(x => _pedestrians.Add(x.GetComponent<Pedestrian>()));
+        objects.ToList().ForEach(x => {
+            var ped = x.GetComponent<Pedestrian>();
+            _pedestrians.Add(ped);
+        });
     }
 
     void Update()
@@ -19,6 +30,17 @@ public class PedestrianManager : MonoBehaviour
         for (var i = 0; i < _pedestrians.Count; i++) 
         {
             _pedestrians[i].MyTick();
+        }
+    }
+
+    public void DestoryPedestrian(Pedestrian other, bool isZombie = false) {
+        if (isZombie) {
+            ZombieManager.Instance.RemoveZombie(other);
+        }
+
+        if (_pedestrians.Contains(other)) {
+            _pedestrians.Remove(other);
+            Destroy(other.gameObject);
         }
     }
 }

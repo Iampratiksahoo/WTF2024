@@ -68,16 +68,15 @@ public class WayPointManager : MonoBehaviour
     private void GetAllWayPoints()
     {
         var objects = FindObjectsByType(typeof(WayPoint), FindObjectsSortMode.None);
-        objects.ToList().ForEach(x =>
-        {
+        objects.ToList().ForEach(x => {
             var wp = x.GetComponent<WayPoint>();
-            if (_wayPointMap.ContainsKey(wp._wayPointType))
-            {
-                _wayPointMap[wp._wayPointType].Add(wp);
-            }
-            else
-            {
-                _wayPointMap[wp._wayPointType] = new List<WayPoint>() { wp };
+            // We do not add police waypoints to cache
+            if (wp._wayPointType != EWayPointType.PolicePatrolPoint) {
+                if (_wayPointMap.ContainsKey(wp._wayPointType)) {
+                    _wayPointMap[wp._wayPointType].Add(wp);
+                } else {
+                    _wayPointMap[wp._wayPointType] = new List<WayPoint>() { wp };
+                }
             }
         });
     }

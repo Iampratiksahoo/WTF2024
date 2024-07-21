@@ -6,7 +6,8 @@ using UnityEngine;
 public enum EWayPointType 
 {
     Patrol,
-    Hide
+    Hide,
+    PolicePatrolPoint
 }
 
 public class WayPoint : MonoBehaviour
@@ -15,13 +16,12 @@ public class WayPoint : MonoBehaviour
 
     void OnDrawGizmos() 
     {
-        if (_wayPointType == EWayPointType.Patrol)
-        {
+        if (_wayPointType == EWayPointType.Patrol) {
             Gizmos.color = Color.green;
-        }
-        else if (_wayPointType == EWayPointType.Hide)
-        {
+        } else if (_wayPointType == EWayPointType.Hide) {
             Gizmos.color = Color.blue;
+        } else {
+            Gizmos.color = Color.cyan;
         }
 
         var start = transform.position;

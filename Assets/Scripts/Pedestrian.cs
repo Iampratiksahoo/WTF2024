@@ -12,21 +12,22 @@ public class Pedestrian : MonoBehaviour, IZombie, IThreat, IStateCharacter
     public SkinnedMeshRenderer _renderer;
     public Material _humanMaterial;
     public Material _zombieMaterial;
-    public bool _hasTurned = false;
+    public bool _isTurned = false;
     public bool _hasWayPoint = false;
     public NavMeshAgent _agent;
     public ZombieCreator _zombieCreator;
     public SightSensor _sightSensor;
     public Animator _animator;
+    public IThreat _currentThreat;
     public float _currentSpeed = 0f;
     public FSM<Pedestrian> ctx;
     public BaseState<Pedestrian> IdleState { get; private set; }
     public BaseState<Pedestrian> WanderState { get; private set; }
     public BaseState<Pedestrian> HideState { get; private set; }
-    public BaseState<Pedestrian> ChaseState{ get; private set; }
     public BaseState<Pedestrian> InfestingState{ get; private set; }
-    public bool IsTurned { get => _hasTurned; set => _hasTurned = value; }
+    public bool IsTurned { get => _isTurned; set => _isTurned = value; }
     public bool IsThreat { get => IsTurned; set => IsTurned = value; }
+    public Action OnKilled { get; set; }
 
     void Awake() {
     }
@@ -39,15 +40,20 @@ public class Pedestrian : MonoBehaviour, IZombie, IThreat, IStateCharacter
         IdleState = new PedestrianIdleState(ctx);
         WanderState = new PedestrianWanderState(ctx);
         HideState = new PedestrianHideState(ctx);
-        ChaseState = new PedestrianChaseState(ctx);
         InfestingState = new PedestrianInfestingState(ctx);
         ctx.SwitchState(IdleState);
-        _zombieCreator.OnVictimEnterTrigger += OnVictimEnterTrigger;
-        _zombieCreator.OnVictimExitTrigger += OnVictimExitTrigger;
-        _zombieCreator.OnZombifyBegin += OnZombifyBegin;
-        _zombieCreator.OnZombifyEnd += OnZombifyEnd;
-        _sightSensor.OnSensedThreat += OnSensedThreat;
-        _sightSensor.StartSense();
+
+        if (_zombieCreator != null) {
+            _zombieCreator.OnVictimEnterTrigger += OnVictimEnterTrigger;
+            _zombieCreator.OnVictimExitTrigger += OnVictimExitTrigger;
+            _zombieCreator.OnZombifyBegin += OnZombifyBegin;
+            _zombieCreator.OnZombifyEnd += OnZombifyEnd;
+        }
+
+        if (_sightSensor != null) {
+            _sightSensor.OnSensedThreat += OnSensedThreat;
+            _sightSensor.StartSense();
+        }
     }
 
 
@@ -69,7 +75,7 @@ public class Pedestrian : MonoBehaviour, IZombie, IThreat, IStateCharacter
         _animator.SetLayerWeight(1, 1f);
         _pedestrianData.TurnZombieData(); // Convert the data into zombie data, no need for another data class 
         _renderer.material = _zombieMaterial;
-        _hasTurned = true;
+        _isTurned = true;
         _agent.isStopped = false;
         _zombieCreator._canAffect = true;
         ZombieManager.Instance._affectedZombies.Add(this);
@@ -77,7 +83,9 @@ public class Pedestrian : MonoBehaviour, IZombie, IThreat, IStateCharacter
     }
 
     private void OnVictimEnterTrigger(IZombie zombie) {
-        _zombieCreator.TryZombifyVictimInRange();
+        if (_zombieCreator != null) {
+            _zombieCreator.TryZombifyVictimInRange();
+        }
     }
 
     private void OnZombifyBegin() {
@@ -97,7 +105,16 @@ public class Pedestrian : MonoBehaviour, IZombie, IThreat, IStateCharacter
     }
 
     private void OnSensedThreat(IThreat threat) {
+        _currentThreat = threat;
         ctx.SwitchState(HideState);
+    }
+
+    public void Damage(float amount){
+        // Play kill animation
+        // Play particle FX
+        Debug.LogError("Killed: " + name);
+        OnKilled?.Invoke();
+        _sightSensor.StopSense();
     }
 
     public Vector3 GetPosition() {

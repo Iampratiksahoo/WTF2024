@@ -14,4 +14,10 @@ public class ZombieManager : MonoBehaviour
         
         DontDestroyOnLoad(this);
     }
+
+    public void RemoveZombie(IThreat threat) {
+        if (_affectedZombies.Contains(threat)) {
+            _affectedZombies.Remove(threat);
+        }
+    }
 }

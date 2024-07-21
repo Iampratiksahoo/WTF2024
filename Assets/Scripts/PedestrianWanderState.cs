@@ -18,17 +18,18 @@ public class PedestrianWanderState : BaseState<Pedestrian>
 
     public override void OnEnter()
     {
-        _randomPatrolPoint = WayPointManager.Instance.GetRandomPatrolPoint();                                               // Get a random point
+        _randomPatrolPoint = WayPointManager.Instance.GetRandomPatrolPoint();
+        
         NavMesh.SamplePosition(
             _randomPatrolPoint.transform.position, 
             out NavMeshHit hitInfo, 
             900f, 
             NavMesh.AllAreas
-        );                                                                                                                  // Sample position to navmesh
-        _ctx.GetFSMOwner()._animator.SetBool("Walking", true);                                                              // Start the walking animation
-        _ctx.GetFSMOwner()._agent.speed = _ctx.GetFSMOwner()._pedestrianData.walkSpeed;                                     // Set the agent speed
-        _ctx.GetFSMOwner()._agent.stoppingDistance = _ctx.GetFSMOwner()._pedestrianData.acceptanceRadius;                   // Set the acceptance radius to stop the agent at a radius away from the point
-        _ctx.GetFSMOwner()._agent.destination = hitInfo.position;                                                           // Move to that projected position
+        );
+        _ctx.GetFSMOwner()._animator.SetBool("Walking", true);
+        _ctx.GetFSMOwner()._agent.speed = _ctx.GetFSMOwner()._pedestrianData.walkSpeed;
+        _ctx.GetFSMOwner()._agent.stoppingDistance = _ctx.GetFSMOwner()._pedestrianData.acceptanceRadius;
+        _ctx.GetFSMOwner()._agent.destination = hitInfo.position;
     }
 
     public override void OnExit()
