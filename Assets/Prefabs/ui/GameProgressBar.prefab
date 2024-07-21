@@ -61,7 +61,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 227b7e97bdcf8c645bb712bf366cc7c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  progress: 0.327
+  progress: 0
   progressImage: {fileID: 8916375540414568616}
   skull: {fileID: 6816765123347978175}
   skullMinMax: {x: -800, y: 724.5513}
@@ -167,7 +167,7 @@ Transform:
   m_GameObject: {fileID: 4221381759443655280}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.047367994, w: 0.9988775}
-  m_LocalPosition: {x: -222.10385, y: -130.99998, z: 0}
+  m_LocalPosition: {x: -596, y: -130.99998, z: 0}
   m_LocalScale: {x: 9.353074, y: 9.353074, z: 9.353074}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -245,7 +245,7 @@ MonoBehaviour:
   m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 0.327
+  m_FillAmount: 0
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -577,7 +577,7 @@ Transform:
   m_GameObject: {fileID: 9078486011538764755}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.047367994, w: 0.9988775}
-  m_LocalPosition: {x: -301.47174, y: 5, z: 0}
+  m_LocalPosition: {x: -800, y: 5, z: 0}
   m_LocalScale: {x: 12.470767, y: 12.470767, z: 12.470767}
   m_ConstrainProportionsScale: 0
   m_Children:

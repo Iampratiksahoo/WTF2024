@@ -18,6 +18,11 @@ public class GameProgressBar : MonoBehaviour
 
     public void SetProgress(float progress, float max)
     {
+        if(max == 0)
+        {
+            progress = 0;
+            max = 1;
+        }
         progressImage.fillAmount = progress/max;
 
         float skullRange = Mathf.Abs(skullMinMax.x - skullMinMax.y);
