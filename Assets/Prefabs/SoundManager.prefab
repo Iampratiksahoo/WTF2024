@@ -46,7 +46,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 70980a36568060c498ffb2c0b3346dc1, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.25
+  m_Volume: 0.15
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -256,4 +256,4 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 481f08714ca18e241b510371840cc435, type: 3}
   bite: {fileID: 8300000, guid: 3430d9afc4b9a6c4182b888305ede632, type: 3}
   playerDeath: {fileID: 8300000, guid: b1922395ff6dd5746af8863b60bf71cd, type: 3}
-  globalFootstepVol: 0.35
+  globalFootstepVol: 0.15
