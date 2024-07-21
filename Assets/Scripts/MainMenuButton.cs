@@ -1,4 +1,9 @@
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 public class MainMenuButton : MonoBehaviour
 {
@@ -15,7 +20,7 @@ public class MainMenuButton : MonoBehaviour
 
     private void play_OnClick()
     {
-
+        SceneManager.LoadScene(1);
     }
     private void credits_OnClick()
     {
@@ -23,6 +28,10 @@ public class MainMenuButton : MonoBehaviour
     }
     private void quit_OnClick()
     {
+#if UNITY_EDITOR
+        EditorApplication.isPlaying = false;
+#else
         Application.Quit(); 
+#endif
     }
 }
