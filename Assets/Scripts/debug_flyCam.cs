@@ -14,6 +14,10 @@ public class debug_flyCam : MonoBehaviour
 
     private void Start()
     {
+#if !UNITY_EDITOR
+        Destroy(gameObject);
+#endif
+
         Cursor.visible = false;   
     }
 
