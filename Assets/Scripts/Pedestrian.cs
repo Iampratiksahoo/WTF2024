@@ -79,17 +79,17 @@ public class Pedestrian : MonoBehaviour, IZombie, IThreat, IStateCharacter
     }
 
     public void StopMoving() {
+        _agent.isStopped = true;
+        _agent.ResetPath();
         _sightSensor.StopSense();
         ctx.SwitchState(InfestingState);
         _sightSensor.OnSensedThreat -= OnSensedThreat;
-        _agent.isStopped = true;
-        _agent.ResetPath();
     }
 
     public void Turn() {
-        ctx.SwitchState(IdleState);
         _animator.SetLayerWeight(0, 0f);
         _animator.SetLayerWeight(1, 1f);
+        ctx.SwitchState(IdleState);
         _pedestrianData.TurnZombieData(); // Convert the data into zombie data, no need for another data class 
         _renderer.material = _zombieMaterial;
         _isTurned = true;

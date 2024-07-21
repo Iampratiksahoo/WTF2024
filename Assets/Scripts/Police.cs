@@ -95,7 +95,10 @@ public class Police : MonoBehaviour, IZombie, IThreat {
                 }
 
                 // Look towards the target
-                transform.rotation = Quaternion.LookRotation((currentSensedThreat.GetPosition() - transform.position).normalized);
+                // transform.rotation = Quaternion.LookRotation((currentSensedThreat.GetPosition() - transform.position).normalized);
+                var dir = (currentSensedThreat.GetPosition() - transform.position).normalized;
+                var deg = Mathf.Atan2(dir.x * Mathf.Deg2Rad, dir.z * Mathf.Deg2Rad) * Mathf.Rad2Deg;
+                transform.rotation = Quaternion.AngleAxis(deg, transform.up);
 
                 // set walking to false
                 animator.SetBool("Walking", agent.velocity.magnitude >= 0.02f); 

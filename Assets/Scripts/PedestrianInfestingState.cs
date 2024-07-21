@@ -7,6 +7,7 @@ public class PedestrianInfestingState : BaseState<Pedestrian>
 
     public override void OnEnter() {
         // TODO (satweek): Play the getting infested animation
+        Debug.LogError("Going to infesting state: " + _ctx.GetFSMOwner().name);
         _ctx.GetFSMOwner()._agent.isStopped = true;
     }
 

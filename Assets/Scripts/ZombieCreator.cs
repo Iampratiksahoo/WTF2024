@@ -25,10 +25,13 @@ public class ZombieCreator : MonoBehaviour
             try
             {
                 if (Vector3.Distance(transform.parent.position, _currentVictim.GetPosition()) > 4f) {
-                    transform.parent.position = Vector3.MoveTowards(transform.parent.position, _currentVictim.GetPosition(), _snapToVictimSpeed * Time.deltaTime);
+                    transform.root.position = Vector3.MoveTowards(transform.parent.position, _currentVictim.GetPosition(), _snapToVictimSpeed * Time.deltaTime);
                 }
 
-                transform.eulerAngles += Vector3.up * Quaternion.LookRotation((_currentVictim.GetPosition() - transform.position).normalized).eulerAngles.y;
+                // transform.eulerAngles += Vector3.up * Quaternion.LookRotation((_currentVictim.GetPosition() - transform.position).normalized).eulerAngles.y;
+                var dir = (_currentVictim.GetPosition() - transform.position).normalized;
+                var deg = Mathf.Atan2(dir.x * Mathf.Deg2Rad, dir.z * Mathf.Deg2Rad) * Mathf.Rad2Deg;
+                transform.root.rotation = Quaternion.AngleAxis(deg, transform.up);
             }
             catch(Exception e)
             {
@@ -57,12 +60,12 @@ public class ZombieCreator : MonoBehaviour
     private void CleanUp()
     {
         OnZombifyEnd?.Invoke();
+        _currentVictim.Turn();
         _isAttacking = false;
         _victims.Remove(_currentVictim);
         _numberOfVictimsInRadius--;
         _numberOfVictimsInRadius = Mathf.Clamp(_numberOfVictimsInRadius, 0, int.MaxValue);
         _zombifyingCurrentTick = 0f;
-        _currentVictim.Turn();
         _currentVictim = null;
     }
 
@@ -98,7 +101,7 @@ public class ZombieCreator : MonoBehaviour
 
     private void OnTriggerExit(Collider other) {
         var victim = other.GetComponent<IZombie>();
-        if (victim != null && _victims.Contains(victim)) {
+        if (victim != null && _victims.Contains(victim) && victim != _currentVictim) {
             _victims.Remove(victim);
             _numberOfVictimsInRadius--;
             _numberOfVictimsInRadius = Mathf.Clamp(_numberOfVictimsInRadius, 0, int.MaxValue);

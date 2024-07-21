@@ -44,8 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 220eeba96bccf07458515ad5596b54ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _detectionDistance: 10
-  _detectionAngle: 90
+  _detectionDistance: 5
+  _detectionAngle: 45
   _senseInterval: 1
   _currentSenseTimer: 0
   _canSense: 0
