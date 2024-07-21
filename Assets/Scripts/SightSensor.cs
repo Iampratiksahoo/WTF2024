@@ -49,7 +49,7 @@ public class SightSensor : MonoBehaviour
         foreach (var t in affectedZombies) {
             
             // If self
-            if (t.GetTransform() == transform.root.transform)
+            if (t.GetTransform() == transform.parent.transform)
                 continue;
 
             // Distance check
@@ -71,7 +71,6 @@ public class SightSensor : MonoBehaviour
 
             // If all passed fire the event
             OnSensedThreat?.Invoke(t);
-            break;
         }
     }
 

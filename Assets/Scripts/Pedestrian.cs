@@ -15,7 +15,6 @@ public class Pedestrian : MonoBehaviour, IZombie, IThreat, IStateCharacter
     public ZombieCreator _zombieCreator;
     public SightSensor _sightSensor;
     public Animator _animator;
-    public IThreat _currentThreat;
     public float _currentSpeed = 0f;
     public FSM<Pedestrian> ctx;
     public BaseState<Pedestrian> IdleState { get; private set; }
@@ -121,12 +120,7 @@ public class Pedestrian : MonoBehaviour, IZombie, IThreat, IStateCharacter
     }
 
     private void OnSensedThreat(IThreat threat) {
-        // Even after going to infested state the sensor fires
-        // To counter that we do this
-        if (_sightSensor._canSense) {
-            _currentThreat = threat;
-            ctx.SwitchState(HideState);
-        }
+        ctx.SwitchState(HideState);
     }
 
     public void Damage(float amount) {

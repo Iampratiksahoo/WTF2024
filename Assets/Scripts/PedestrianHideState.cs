@@ -33,6 +33,8 @@ public class PedestrianHideState : BaseState<Pedestrian>
         _ctx.GetFSMOwner()._animator.SetBool("Running", false);
         _ctx.GetFSMOwner()._animator.SetBool("Walking", false);
         _ctx.GetFSMOwner()._agent.ResetPath();
+        currentResetTickTimer = 0f;
+        randomResetTimer = 0f;
     }
 
     public override void OnUpdate() {

@@ -25,13 +25,13 @@ public class ZombieCreator : MonoBehaviour
             try
             {
                 if (Vector3.Distance(transform.parent.position, _currentVictim.GetPosition()) > 4f) {
-                    transform.root.position = Vector3.MoveTowards(transform.parent.position, _currentVictim.GetPosition(), _snapToVictimSpeed * Time.deltaTime);
+                    transform.parent.position = Vector3.MoveTowards(transform.parent.position, _currentVictim.GetPosition(), _snapToVictimSpeed * Time.deltaTime);
                 }
 
                 // transform.eulerAngles += Vector3.up * Quaternion.LookRotation((_currentVictim.GetPosition() - transform.position).normalized).eulerAngles.y;
                 var dir = (_currentVictim.GetPosition() - transform.position).normalized;
                 var deg = Mathf.Atan2(dir.x * Mathf.Deg2Rad, dir.z * Mathf.Deg2Rad) * Mathf.Rad2Deg;
-                transform.root.rotation = Quaternion.AngleAxis(deg, transform.up);
+                transform.parent.rotation = Quaternion.AngleAxis(deg, transform.up);
             }
             catch(Exception e)
             {
@@ -50,6 +50,7 @@ public class ZombieCreator : MonoBehaviour
         // Turn them into zombies by starting an animation
         if (_currentVictim == null) {
             _currentVictim = GetClosestFacingVictim();
+            Debug.LogError("Stopping " + _currentVictim.ToString() + " by zombie " + transform.parent.name);
             _currentVictim.StopMoving();
             OnZombifyBegin?.Invoke();
             // After the duration cleanup the state
@@ -61,6 +62,7 @@ public class ZombieCreator : MonoBehaviour
     {
         OnZombifyEnd?.Invoke();
         _currentVictim.Turn();
+        Debug.LogError("Turning " + _currentVictim.ToString() + " by zombie " + transform.parent.name);
         _isAttacking = false;
         _victims.Remove(_currentVictim);
         _numberOfVictimsInRadius--;
@@ -87,12 +89,14 @@ public class ZombieCreator : MonoBehaviour
     private void OnTriggerEnter(Collider other) {
         var victim = other.GetComponent<IZombie>();
         if (
-            other.transform != transform.root.transform && // It also adds itself as a victim so to avoid that
+            other.transform != transform.parent.transform && // It also adds itself as a victim so to avoid that
+            other.transform != transform && 
             victim != null && 
             !victim.IsTurned && 
             !_victims.Contains(victim)
         ) {
             _victims.Add(victim);
+            Debug.Log("Victim added: " + victim.ToString());
             _numberOfVictimsInRadius++;
             _numberOfVictimsInRadius = Mathf.Clamp(_numberOfVictimsInRadius, 0, int.MaxValue);
             OnVictimEnterTrigger?.Invoke(victim);

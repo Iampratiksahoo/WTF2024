@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _detectionDistance: 5
-  _detectionAngle: 45
+  _detectionAngle: 90
   _senseInterval: 1
   _currentSenseTimer: 0
   _canSense: 0
@@ -280,7 +280,7 @@ PrefabInstance:
     - target: {fileID: 4414818446329456475, guid: a7d921fe082addb4d8fcb28c36a250b1,
         type: 3}
       propertyPath: m_Radius
-      value: 1.2
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6465643329963704933, guid: a7d921fe082addb4d8fcb28c36a250b1,
         type: 3}
