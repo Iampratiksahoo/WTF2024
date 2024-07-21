@@ -61,7 +61,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 227b7e97bdcf8c645bb712bf366cc7c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  progress: 1
+  progress: 0
   progressImage: {fileID: 8916375540414568616}
   skull: {fileID: 1677819261664281070}
   skullMinMax: {x: -600, y: 530}
@@ -135,7 +135,7 @@ MonoBehaviour:
   m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 1
+  m_FillAmount: 0
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -325,7 +325,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 530, y: 0}
+  m_AnchoredPosition: {x: -600, y: 0}
   m_SizeDelta: {x: 280.46, y: 377.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4429961299845377232
@@ -378,7 +378,7 @@ GameObject:
   - component: {fileID: 3705800458417712531}
   - component: {fileID: 5169088981825785872}
   m_Layer: 5
-  m_Name: Image
+  m_Name: tip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -400,7 +400,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -232.7, y: -12.5}
+  m_AnchoredPosition: {x: -232.70001, y: -24.833336}
   m_SizeDelta: {x: 512, y: 513}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &3705800458417712531
