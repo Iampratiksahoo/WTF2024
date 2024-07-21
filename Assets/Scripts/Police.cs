@@ -7,7 +7,8 @@ using UnityEngine.AI;
 public enum PoliceState {
     Idle,
     Patrol,
-    Chase
+    Chase,
+    Infesting
 }
 
 [System.Serializable]
@@ -20,7 +21,7 @@ public struct PoliceData {
     public float shootingInterval;
 }
 
-public class Police : MonoBehaviour {
+public class Police : MonoBehaviour, IZombie {
     public List<WayPoint> patrollingWayPoints = new();
     public PoliceData data;
     public PoliceState policeState;
@@ -44,6 +45,8 @@ public class Police : MonoBehaviour {
             }
         }
     }
+
+    public bool IsTurned { get; set; }
 
     void Start() {
         State = PoliceState.Idle;
@@ -108,6 +111,11 @@ public class Police : MonoBehaviour {
                 currentShootingTickTimer += Time.deltaTime;
                 break;
             }
+
+            case PoliceState.Infesting: {
+                /** Do nothing **/
+                break;
+            }
         }
     }
 
@@ -141,5 +149,27 @@ public class Police : MonoBehaviour {
 
     void OnDisable() {
         sightSensor.OnSensedThreat -= OnSensedThreat;
+    }
+
+    public Vector3 GetPosition() {
+        return transform.position;
+    }
+
+    public Quaternion GetRotation() {
+        return transform.rotation;
+    }
+
+    public void Turn() {
+        // Play dead fx and sound effect here
+        IsTurned = true;
+        Debug.LogError("Police " + name + " is dead by the hands of zombie");
+    }
+
+    public void StopMoving() {
+        sightSensor.StopSense();
+        sightSensor.OnSensedThreat -= OnSensedThreat;
+        agent.isStopped = true;
+        agent.ResetPath();
+        State = PoliceState.Infesting;
     }
 }

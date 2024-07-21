@@ -34,7 +34,7 @@ public class PedestrianManager : MonoBehaviour
             _pedestrians[i].MyTick();
         }
 
-        gameProgress.SetProgress(deads.Count, _pedestrians.Count + deads.Count);
+        gameProgress?.SetProgress(deads.Count, _pedestrians.Count + deads.Count);
     }
 
     public void Register(Pedestrian other) {
