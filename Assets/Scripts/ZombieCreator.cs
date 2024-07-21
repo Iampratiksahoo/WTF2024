@@ -27,6 +27,8 @@ public class ZombieCreator : MonoBehaviour
                 if (Vector3.Distance(transform.parent.position, _currentVictim.GetPosition()) > 4f) {
                     transform.parent.position = Vector3.MoveTowards(transform.parent.position, _currentVictim.GetPosition(), _snapToVictimSpeed * Time.deltaTime);
                 }
+
+                transform.eulerAngles += Vector3.up * Quaternion.LookRotation((_currentVictim.GetPosition() - transform.position).normalized).eulerAngles.y;
             }
             catch(Exception e)
             {
@@ -55,11 +57,12 @@ public class ZombieCreator : MonoBehaviour
     private void CleanUp()
     {
         OnZombifyEnd?.Invoke();
-        _currentVictim.Turn();
         _isAttacking = false;
         _victims.Remove(_currentVictim);
         _numberOfVictimsInRadius--;
+        _numberOfVictimsInRadius = Mathf.Clamp(_numberOfVictimsInRadius, 0, int.MaxValue);
         _zombifyingCurrentTick = 0f;
+        _currentVictim.Turn();
         _currentVictim = null;
     }
 
@@ -88,6 +91,7 @@ public class ZombieCreator : MonoBehaviour
         ) {
             _victims.Add(victim);
             _numberOfVictimsInRadius++;
+            _numberOfVictimsInRadius = Mathf.Clamp(_numberOfVictimsInRadius, 0, int.MaxValue);
             OnVictimEnterTrigger?.Invoke(victim);
         }
     }
@@ -97,6 +101,7 @@ public class ZombieCreator : MonoBehaviour
         if (victim != null && _victims.Contains(victim)) {
             _victims.Remove(victim);
             _numberOfVictimsInRadius--;
+            _numberOfVictimsInRadius = Mathf.Clamp(_numberOfVictimsInRadius, 0, int.MaxValue);
             OnVictimExitTrigger?.Invoke(victim);
         }
     }

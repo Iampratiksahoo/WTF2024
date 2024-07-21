@@ -19,7 +19,7 @@ public struct PoliceData {
     public float shootingInterval;
 }
 
-public class Police : MonoBehaviour, IZombie {
+public class Police : MonoBehaviour, IZombie, IThreat {
     public List<WayPoint> patrollingWayPoints = new();
     public PoliceData data;
     public PoliceState policeState;
@@ -46,6 +46,8 @@ public class Police : MonoBehaviour, IZombie {
     }
 
     public bool IsTurned { get; set; }
+    public bool IsThreat { get => IsTurned; set => IsTurned = value; }
+    System.Action IThreat.OnDead { get; set; }
 
     void Start() {
         State = PoliceState.Idle;
@@ -89,6 +91,7 @@ public class Police : MonoBehaviour, IZombie {
                     // Lost sight ? 
                     currentShootingTickTimer = 0f;
                     State = PoliceState.Idle;
+                    break;
                 }
 
                 // Look towards the target
@@ -147,14 +150,6 @@ public class Police : MonoBehaviour, IZombie {
         }
     }
 
-    void OnEnable() {
-        sightSensor.OnSensedThreat += OnSensedThreat;
-    }
-
-    void OnDisable() {
-        sightSensor.OnSensedThreat -= OnSensedThreat;
-    }
-
     public Vector3 GetPosition() {
         return transform.position;
     }
@@ -165,9 +160,9 @@ public class Police : MonoBehaviour, IZombie {
 
     public void Turn() {
         // Play dead fx and sound effect here
-        GetComponent<Death>()?.Die();
         IsTurned = true;
         Debug.LogError("Police " + name + " is dead by the hands of zombie");
+        GetComponent<Death>()?.Die();
     }
 
     public void StopMoving() {
@@ -176,5 +171,20 @@ public class Police : MonoBehaviour, IZombie {
         agent.isStopped = true;
         agent.ResetPath();
         State = PoliceState.Infesting;
+    }
+
+    public Transform GetTransform() {
+        return transform;
+    }
+
+    public void Damage(float amount) {
+    }
+
+    void OnEnable() {
+        sightSensor.OnSensedThreat += OnSensedThreat;
+    }
+
+    void OnDisable() {
+        sightSensor.OnSensedThreat -= OnSensedThreat;
     }
 }

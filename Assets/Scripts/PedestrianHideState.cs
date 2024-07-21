@@ -15,7 +15,7 @@ public class PedestrianHideState : BaseState<Pedestrian>
     public override void OnEnter() {
         randomResetTimer = Random.Range(fearResetTimer.x, fearResetTimer.y);
         Debug.Log("Going to a hiding spot: " + _ctx.GetFSMOwner().transform.name);
-        fleeWayPoint = WayPointManager.Instance.GetClosestHidePoint(_ctx.GetFSMOwner().transform.position);
+        fleeWayPoint = WayPointManager.Instance.GetRandomHidePoint();
         NavMesh.SamplePosition(
             fleeWayPoint.transform.position, 
             out NavMeshHit hitInfo, 

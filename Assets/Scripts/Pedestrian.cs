@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -43,7 +45,6 @@ public class Pedestrian : MonoBehaviour, IZombie, IThreat, IStateCharacter
     void Start()
     {
         _renderer.material = _humanMaterial;
-
         ctx = new(this);
         IdleState = new PedestrianIdleState(ctx);
         WanderState = new PedestrianWanderState(ctx);
@@ -129,7 +130,7 @@ public class Pedestrian : MonoBehaviour, IZombie, IThreat, IStateCharacter
         ctx.SwitchState(HideState);
     }
 
-    public void Damage(float amount){
+    public void Damage(float amount) {
         // Play kill animation
         // Play particle FX
         Health -= amount;

@@ -15,8 +15,8 @@ public class Death : MonoBehaviour
         death.Play();
 
         SoundManager.Instance.PlayOnBackup(SoundManager.Instance.playerDeath, deathSoundVol);
-
-        DestroyImmediate(gameObject);
+        gameObject.SetActive(false);
+        // DestroyImmediate(gameObject);
     }
 
 }
