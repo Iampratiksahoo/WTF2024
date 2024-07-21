@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour {
     Vector3 cameraFollowVelocity;
     #endregion
 
+    public ParticleSystem clickEffect;
     void Start() {
         playerPosLastFrame = transform.position;
         playerPosCurrentFrame = transform.position;
@@ -67,6 +68,14 @@ public class PlayerController : MonoBehaviour {
         if (Input.GetMouseButton(0)) {
             if (Physics.Raycast(_playerCamera.ScreenPointToRay(Input.mousePosition), out RaycastHit hitInfo, 100f, _walkableLayer)) {
                 _agent.destination = hitInfo.point;
+
+                if(clickEffect != null)
+                {
+                    var clickEff = Instantiate(clickEffect);
+                    clickEff.transform.position = hitInfo.point;
+                    clickEff.Play();
+                    Destroy(clickEff.gameObject, clickEff.main.duration);
+                }
             }
         }
         _animator.SetBool("Running", _agent.velocity.magnitude > 0.02f);

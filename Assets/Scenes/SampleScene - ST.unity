@@ -99164,6 +99164,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8085753292740068277, guid: 46563d37dd63f6a449cae053cb1060ce,
         type: 3}
+      propertyPath: clickEffect
+      value: 
+      objectReference: {fileID: 7921455678487489209, guid: cb34835c9c3228848b69aef14713e3dd,
+        type: 3}
+    - target: {fileID: 8085753292740068277, guid: 46563d37dd63f6a449cae053cb1060ce,
+        type: 3}
       propertyPath: _playerCamera
       value: 
       objectReference: {fileID: 330585545}
