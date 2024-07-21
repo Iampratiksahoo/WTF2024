@@ -42,7 +42,7 @@ public class TutorialManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(3f);
 
         // Progress bar 
-        tutorial_text.text = "The top bar indicates the human to zombie ratio";
+        tutorial_text.text = "The bottom left bar indicates the human to zombie ratio";
         progressBar.SetActive(true);
         yield return new WaitForSeconds(.5f);
         progressBar.SetActive(false);
@@ -63,6 +63,5 @@ public class TutorialManager : MonoBehaviour
         yield return new WaitForSeconds(2.5f);
 
         tutorial_box.SetActive(false);
-        DestroyImmediate(gameObject);
     }
 }
