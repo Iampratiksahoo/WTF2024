@@ -80,9 +80,11 @@ MonoBehaviour:
     m_Bits: 8
   health: 100
   _zombieCreator: {fileID: 4713984960934586101}
+  chosenQuad: {fileID: 0}
   _moveSpeed: 15
   cameraOffset: {x: 0, y: 0, z: 0}
   cameraFollowSpeed: 0.6
+  controlCamera: 1
   clickEffect: {fileID: 7921455678487489209, guid: cb34835c9c3228848b69aef14713e3dd,
     type: 3}
 --- !u!81 &8484385161122998045

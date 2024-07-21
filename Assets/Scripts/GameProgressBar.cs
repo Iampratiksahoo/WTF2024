@@ -18,7 +18,7 @@ public class GameProgressBar : MonoBehaviour
 
     private void FixedUpdate()
     {
-        float progress = ZombieManager.Instance._affectedZombies.Count - 1; 
+        float progress = ZombieManager.Instance._affectedZombies.Count + PedestrianManager.Instance.deads.Count - 1; 
         float max = PedestrianManager.Instance._pedestrians.Count + PedestrianManager.Instance.deads.Count; 
         SetProgress(progress, max);
     }
