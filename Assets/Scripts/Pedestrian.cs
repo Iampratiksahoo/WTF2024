@@ -47,6 +47,7 @@ public class Pedestrian : MonoBehaviour, IZombie, IThreat, IStateCharacter
         _zombieCreator.OnZombifyBegin += OnZombifyBegin;
         _zombieCreator.OnZombifyEnd += OnZombifyEnd;
         _sightSensor.OnSensedThreat += OnSensedThreat;
+        _sightSensor.StartSense();
     }
 
 
@@ -56,6 +57,8 @@ public class Pedestrian : MonoBehaviour, IZombie, IThreat, IStateCharacter
     }
 
     public void StopMoving() {
+        _sightSensor.StopSense();
+        _sightSensor.OnSensedThreat -= OnSensedThreat;
         _agent.isStopped = true;
         _agent.ResetPath();
         ctx.SwitchState(InfestingState);
@@ -69,7 +72,7 @@ public class Pedestrian : MonoBehaviour, IZombie, IThreat, IStateCharacter
         _hasTurned = true;
         _agent.isStopped = false;
         _zombieCreator._canAffect = true;
-        _sightSensor.OnSensedThreat -= OnSensedThreat;
+        ZombieManager.Instance._affectedZombies.Add(this);
         ctx.SwitchState(IdleState);
     }
 
@@ -88,8 +91,9 @@ public class Pedestrian : MonoBehaviour, IZombie, IThreat, IStateCharacter
     }
 
     private void OnZombifyEnd() {
-        _agent.isStopped = false;
         _animator.SetBool("Attacking", false);
+        _agent.isStopped = false;
+        ctx.SwitchState(IdleState);
     }
 
     private void OnSensedThreat(IThreat threat) {
@@ -102,6 +106,10 @@ public class Pedestrian : MonoBehaviour, IZombie, IThreat, IStateCharacter
 
     public Quaternion GetRotation() {
         return transform.rotation;
+    }
+
+    public Transform GetTransform() {
+        return transform;
     }
 }
 
