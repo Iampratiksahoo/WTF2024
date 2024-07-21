@@ -4,10 +4,12 @@ public class SoundManager : MonoBehaviour
 {
     public static SoundManager Instance {  get; private set; }
 
+    public AudioSource bkp_source;
     public AudioClip shoot;
     public AudioClip[] footstep;
     public AudioClip[] growls;
     public AudioClip bite;
+    public AudioClip playerDeath;
 
     [Range(0f, 1f)] public float globalFootstepVol = .35f;
 
@@ -37,5 +39,12 @@ public class SoundManager : MonoBehaviour
     public AudioClip GetGrowls()
     {
         return growls[Random.Range(0, growls.Length)];
+    }
+
+    public void PlayOnBackup(AudioClip clip, float vol)
+    {
+        bkp_source.volume = vol;
+        bkp_source.clip = clip;
+        bkp_source.Play();
     }
 }

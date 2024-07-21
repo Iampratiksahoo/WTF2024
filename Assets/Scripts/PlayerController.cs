@@ -115,7 +115,7 @@ public class PlayerController : MonoBehaviour, IThreat {
         if (health <= 0) {
             Debug.Log("Dead");
             OnDead?.Invoke();
-            gameObject.SetActive(false);
+            GetComponent<Death>().Die();
         }
     }
 }

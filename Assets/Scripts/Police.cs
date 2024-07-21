@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -33,6 +31,7 @@ public class Police : MonoBehaviour, IZombie {
     float currentPatrolTickTimer;
     float currentShootingTickTimer;
     public ParticleSystem shootingParticle;
+    public AudioSource source; 
 
     public PoliceState State { 
         get => policeState;
@@ -126,6 +125,11 @@ public class Police : MonoBehaviour, IZombie {
         if (Physics.Linecast(start, end, out RaycastHit hitInfo)) {
             var threat = hitInfo.collider.GetComponentInParent<IThreat>();
             shootingParticle.Play();
+            if(source.isPlaying)
+            {
+                source.Stop();
+            }
+            source.Play();
             threat?.Damage(35f);
         }
     }
@@ -161,6 +165,7 @@ public class Police : MonoBehaviour, IZombie {
 
     public void Turn() {
         // Play dead fx and sound effect here
+        GetComponent<Death>()?.Die();
         IsTurned = true;
         Debug.LogError("Police " + name + " is dead by the hands of zombie");
     }

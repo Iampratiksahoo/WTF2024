@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7286940611248515843}
   - component: {fileID: 8085753292740068277}
   - component: {fileID: 8484385161122998045}
+  - component: {fileID: 6806256594203800284}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -92,6 +93,22 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4916903683597815297}
   m_Enabled: 1
+--- !u!114 &6806256594203800284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4916903683597815297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68b62df0d4a980d4dbd1dc48c043f4b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deathSmoke: {fileID: 6650199810314842004, guid: 3b7f2c753d435d647a80f1f047a113e3,
+    type: 3}
+  scale: {x: 1, y: 1, z: 1}
+  deathSoundVol: 0.3
 --- !u!1 &6346655889152268152
 GameObject:
   m_ObjectHideFlags: 0

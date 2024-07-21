@@ -4,7 +4,7 @@ using UnityEngine;
 public class billboard_anim : MonoBehaviour
 {
     public AudioSource source;
-    public GameObject on;
+    public GameObject[] ons;
     public AudioClip on_clip;
     public AudioClip off_clip;
 
@@ -19,17 +19,20 @@ public class billboard_anim : MonoBehaviour
     {
         while (true)
         {
-            if(on.activeInHierarchy)
+            foreach (var on in ons)
             {
-                source.clip = off_clip;
-                on.SetActive(false);
+                if(on.activeInHierarchy)
+                {
+                    source.clip = off_clip;
+                    on.SetActive(false);
+                }
+                else
+                {
+                    source.clip = on_clip;
+                    on.SetActive(true);
+                }
+                source.Play();
             }
-            else
-            {
-                source.clip = on_clip;
-                on.SetActive(true);
-            }
-            source.Play();
             yield return new WaitForSeconds(delay);
         }
     }

@@ -22,8 +22,15 @@ public class ZombieCreator : MonoBehaviour
     public void Update() {
         // While we have a current victim we lerp towards it's positon
         if (_currentVictim != null) {
-            if (Vector3.Distance(transform.parent.position, _currentVictim.GetPosition()) > 4f) {
-                transform.parent.position = Vector3.MoveTowards(transform.parent.position, _currentVictim.GetPosition(), _snapToVictimSpeed * Time.deltaTime);
+            try
+            {
+                if (Vector3.Distance(transform.parent.position, _currentVictim.GetPosition()) > 4f) {
+                    transform.parent.position = Vector3.MoveTowards(transform.parent.position, _currentVictim.GetPosition(), _snapToVictimSpeed * Time.deltaTime);
+                }
+            }
+            catch(Exception e)
+            {
+                Debug.Log(e);
             }
         }
     }

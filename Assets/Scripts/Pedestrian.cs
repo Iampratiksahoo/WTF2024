@@ -31,6 +31,12 @@ public class Pedestrian : MonoBehaviour, IZombie, IThreat, IStateCharacter
 
     public float Health = 100f;
 
+    public AudioSource audioSource;
+    public float growlInterval = 3f;
+    [Range(0f, 1f)] public float growlingChance = .3f;
+
+    private float lastGrowlTime; 
+
     void Awake() {
     }
 
@@ -56,12 +62,24 @@ public class Pedestrian : MonoBehaviour, IZombie, IThreat, IStateCharacter
             _sightSensor.OnSensedThreat += OnSensedThreat;
             _sightSensor.StartSense();
         }
+
+        lastGrowlTime = Time.time;
     }
 
 
     public void MyTick() 
     {
         ctx.Tick();
+
+        if(_isTurned && (Time.time - lastGrowlTime >= growlInterval))
+        {
+            if(UnityEngine.Random.Range(0f, 1f) <= growlingChance)
+            {
+                audioSource.clip = SoundManager.Instance.GetGrowls();
+                audioSource.Play();
+            }
+            lastGrowlTime = Time.time;
+        }
     }
 
     public void StopMoving() {
