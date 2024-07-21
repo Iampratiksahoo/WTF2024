@@ -138,6 +138,7 @@ public class Police : MonoBehaviour, IZombie, IThreat {
     }
 
     private void OnSensedThreat(IThreat threat) {
+        if (currentSensedThreat != null) return;
         currentSensedThreat = threat;
         currentSensedThreat.OnDead += OnDead;
         State = PoliceState.Chase;

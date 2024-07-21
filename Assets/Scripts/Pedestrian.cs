@@ -85,13 +85,14 @@ public class Pedestrian : MonoBehaviour, IZombie, IThreat, IStateCharacter
 
     public void StopMoving() {
         _sightSensor.StopSense();
+        ctx.SwitchState(InfestingState);
         _sightSensor.OnSensedThreat -= OnSensedThreat;
         _agent.isStopped = true;
         _agent.ResetPath();
-        ctx.SwitchState(InfestingState);
     }
 
     public void Turn() {
+        ctx.SwitchState(IdleState);
         _animator.SetLayerWeight(0, 0f);
         _animator.SetLayerWeight(1, 1f);
         _pedestrianData.TurnZombieData(); // Convert the data into zombie data, no need for another data class 
@@ -100,7 +101,6 @@ public class Pedestrian : MonoBehaviour, IZombie, IThreat, IStateCharacter
         _agent.isStopped = false;
         _zombieCreator._canAffect = true;
         ZombieManager.Instance._affectedZombies.Add(this);
-        ctx.SwitchState(IdleState);
     }
 
     private void OnVictimEnterTrigger(IZombie zombie) {
@@ -126,8 +126,12 @@ public class Pedestrian : MonoBehaviour, IZombie, IThreat, IStateCharacter
     }
 
     private void OnSensedThreat(IThreat threat) {
-        _currentThreat = threat;
-        ctx.SwitchState(HideState);
+        // Even after going to infested state the sensor fires
+        // To counter that we do this
+        if (_sightSensor._canSense) {
+            _currentThreat = threat;
+            ctx.SwitchState(HideState);
+        }
     }
 
     public void Damage(float amount) {

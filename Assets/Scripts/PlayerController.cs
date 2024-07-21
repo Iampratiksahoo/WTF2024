@@ -131,6 +131,8 @@ public class PlayerController : MonoBehaviour, IThreat {
             Debug.Log("Dead");
             OnDead?.Invoke();
             GameManager.Instance.Lost();
+            ZombieManager.Instance.RemoveZombie(this);
+            Camera.main.GetComponent<AudioListener>().enabled = true;
             GetComponent<Death>().Die();
         }
     }

@@ -71,6 +71,7 @@ public class SightSensor : MonoBehaviour
 
             // If all passed fire the event
             OnSensedThreat?.Invoke(t);
+            break;
         }
     }
 
