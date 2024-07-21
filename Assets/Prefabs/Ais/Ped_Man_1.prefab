@@ -98,7 +98,7 @@ MonoBehaviour:
     walkSpeed: 4
     runSpeed: 6
     wanderTimer: 4
-    acceptanceRadius: 5
+    acceptanceRadius: 15
   _renderer: {fileID: 1043831112841089001}
   _humanMaterial: {fileID: 2100000, guid: c2de9ee12d731e14e93392e0a8046454, type: 2}
   _zombieMaterial: {fileID: 2100000, guid: ac2528432d001b747a05ca8547771d34, type: 2}
